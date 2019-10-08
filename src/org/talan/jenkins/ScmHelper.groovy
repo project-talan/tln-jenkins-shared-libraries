@@ -22,6 +22,6 @@ class ScmHelper {
     }
     
     public void collectBuildInfo() {
-        script.sh('echo Hi && pwd')
+        this.script.sh('echo Hi && pwd')
     }
 }
