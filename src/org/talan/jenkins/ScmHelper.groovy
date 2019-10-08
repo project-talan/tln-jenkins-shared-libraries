@@ -19,7 +19,7 @@ class ScmHelper {
         this.params = params
     }
     
-    collectBuildInfo() {
-        sh 'echo Hi'
+    public void collectBuildInfo() {
+        sh 'echo Hi && pwd'
     }
 }
