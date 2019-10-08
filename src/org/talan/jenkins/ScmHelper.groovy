@@ -16,7 +16,7 @@ class ScmHelper {
     def githubToken
 
     ScmHelper(script, scmVars, params) {
-        this.steps = script
+        this.script = script
         this.scmVars = scmVars
         this.params = params
     }
