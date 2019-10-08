@@ -20,6 +20,6 @@ class ScmHelper {
     }
     
     public void collectBuildInfo() {
-        sh 'echo Hi && pwd'
+        tlnScmUtils.executeShell('echo Hi && pwd')
     }
 }
