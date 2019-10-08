@@ -16,6 +16,6 @@ class ScmHelper {
 
     ScmHelper(scmVars, params) {
         this.scmVars = scmVars
-        this.age = params
+        this.params = params
     }
 }
