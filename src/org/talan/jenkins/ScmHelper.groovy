@@ -1,6 +1,7 @@
 package org.talan.jenkins
 
 class ScmHelper {
+    def steps
     def scmVars
     def params
     def isPullRequest
@@ -14,12 +15,13 @@ class ScmHelper {
     def sonarToken
     def githubToken
 
-    ScmHelper(scmVars, params) {
+    ScmHelper(steps, scmVars, params) {
+        this.steps = steps
         this.scmVars = scmVars
         this.params = params
     }
     
     public void collectBuildInfo() {
-        tlnScmUtils.executeShell('echo Hi && pwd')
+        steps.sh('echo Hi && pwd')
     }
 }
