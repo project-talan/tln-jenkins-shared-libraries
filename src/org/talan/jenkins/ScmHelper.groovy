@@ -18,4 +18,8 @@ class ScmHelper {
         this.scmVars = scmVars
         this.params = params
     }
+    
+    collectBuildInfo() {
+        sh 'echo Hi'
+    }
 }
