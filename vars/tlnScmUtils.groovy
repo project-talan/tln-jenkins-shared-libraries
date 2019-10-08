@@ -1,30 +1,23 @@
 class ScmHelper {
-    String name
-    Integer age
+    def scmVars
+    def params
+    def isPullRequest
+    def commitSha
+    def buildBranch
+    def pullId
+    def lastCommitAuthorEmail
+    def origin
+    def repo
+    def org
+    def sonarToken
+    def githubToken
 
-    ScmHelper(name, age) {          
-        this.name = name
-        this.age = age
+    ScmHelper(scmVars, params) {
+        this.scmVars = scmVars
+        this.age = params
     }
 }
 
-def createScmHelper() {
-    return [
-        'attachment-service-lib',
-        'bwfa',
-        'case-lib',
-        'cognitive-lib',
-        'email-lib',
-        'flowsets-lib',
-        'knowledge',
-        'notification-service-lib',
-        'search',
-        'shared-components-lib',
-        'shared-components-samples',
-        'shared-services-lib',
-        'slm',
-        'social-lib',
-        'task-lib',
-        'ticketing-lib'
-    ]
+def createScmHelper(scmVars, params) {
+    return new ScmHelper(scmVars, params)
 }
