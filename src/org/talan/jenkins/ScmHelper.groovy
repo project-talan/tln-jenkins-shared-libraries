@@ -44,18 +44,18 @@ class ScmHelper {
     if (this.buildBranch.contains('PR-')) {
       // multibranch PR build
       this.isPullRequest = true
-      this.pullId = CHANGE_ID
+      this.pullId = this.script.env.CHANGE_ID
     } else if (this.params.containsKey('sha1')){
       // standard PR build
       this.isPullRequest = true
-      this.pullId = ghprbPullId
+      this.pullId = this.params.ghprbPullId
       this.commitSha = this.params.ghprbActualCommit
     } else {
       // PUSH build
     }
     //
     printTopic('SCM variables')
-    println(this,scmVars)
+    println(this.scmVars)
     printTopic('Job input parameters');
     println(this.params)
     //
@@ -63,26 +63,26 @@ class ScmHelper {
     printTopic('Build info')
     println("[PR:${this.isPullRequest}] [BRANCH:${this.buildBranch}] [COMMIT: ${this.commitSha}] [PULL ID: ${this.pullId}]")
     printTopic('Environment variables')
-    this.script.sh(returnStdout: true, script: 'env')
+    this.script.sh('env')
     //
     // Extract organisation and repository names
     printTopic('Repo parameters')
-    this.origin = sh(returnStdout: true, script: 'git config --get remote.origin.url')
-    this.org = sh(returnStdout: true, script:'''git config --get remote.origin.url | rev | awk -F'[./:]' '{print $2}' | rev''').trim()
-    this.repo = sh(returnStdout: true, script:'''git config --get remote.origin.url | rev | awk -F'[./:]' '{print $1}' | rev''').trim()
+    this.origin = this.script.sh('git config --get remote.origin.url')
+    this.org = this.script.sh('''git config --get remote.origin.url | rev | awk -F'[./:]' '{print $2}' | rev''').trim()
+    this.repo = this.script.sh('''git config --get remote.origin.url | rev | awk -F'[./:]' '{print $1}' | rev''').trim()
     println("[origin:${origin}] [org:${org}] [repo:${repo}]")
     //
     // Get authors' emails
     printTopic('Author(s)')
-    this.lastCommitAuthorEmail = this.script.sh(returnStdout: true, script:'''git log --format="%ae" HEAD^!''').trim()
+    this.lastCommitAuthorEmail = this.script.sh('''git log --format="%ae" HEAD^!''').trim()
     if (!pullRequest){
-      lastCommitAuthorEmail = this.script.sh(returnStdout: true, script:'''git log -2 --format="%ae" | paste -s -d ",\n"''').trim()
+      lastCommitAuthorEmail = this.script.sh('''git log -2 --format="%ae" | paste -s -d ",\n"''').trim()
     }
     println("[lastCommitAuthorEmail:${lastCommitAuthorEmail}]")
     //
     //
     printTopic('Sonarqube properties')
-    this.script.sh(returnStdout: true, script: 'cat sonar-project.properties')
+    this.script.sh('cat sonar-project.properties')
 
     this.script.sh('echo Hi && pwd')
   }
