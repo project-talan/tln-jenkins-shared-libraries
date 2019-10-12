@@ -114,4 +114,19 @@ class ScmHelper {
     */
   }
 
+  /*
+   *
+   */
+  public void sendEmailNotification(subj, body, recepients = '') {
+    this.script.emailext(body: body,
+      recipientProviders: [
+        [$class: 'CulpritsRecipientProvider'],
+        [$class: 'DevelopersRecipientProvider'],
+        [$class: 'RequesterRecipientProvider']
+      ],
+      subject: subj,
+      to: [this.lastCommitAuthorEmail, recepients].join(',')
+    )
+  }
+
 }
