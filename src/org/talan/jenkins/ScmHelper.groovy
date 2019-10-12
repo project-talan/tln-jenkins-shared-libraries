@@ -76,9 +76,9 @@ class ScmHelper {
     printTopic('Author(s)')
     this.lastCommitAuthorEmail = this.script.sh(script: '''git log --format="%ae" HEAD^!''', returnStdout: true).trim()
     if (!pullRequest){
-      lastCommitAuthorEmail = this.script.sh(script: '''git log -2 --format="%ae" | paste -s -d ",\n"''', returnStdout: true).trim()
+      this.lastCommitAuthorEmail = this.script.sh(script: '''git log -2 --format="%ae" | paste -s -d ",\n"''', returnStdout: true).trim()
     }
-    println("[lastCommitAuthorEmail:${lastCommitAuthorEmail}]")
+    println("[lastCommitAuthorEmail:${this.lastCommitAuthorEmail}]")
     //
     //
     printTopic('Sonarqube properties')
