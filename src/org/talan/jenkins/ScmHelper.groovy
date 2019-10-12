@@ -63,26 +63,26 @@ class ScmHelper {
     printTopic('Build info')
     println("[PR:${this.isPullRequest}] [BRANCH:${this.buildBranch}] [COMMIT: ${this.commitSha}] [PULL ID: ${this.pullId}]")
     printTopic('Environment variables')
-    this.script.sh('env')
+    this.script.sh(script:'env', returnStdout: true)
     //
     // Extract organisation and repository names
     printTopic('Repo parameters')
-    this.origin = this.script.sh('git config --get remote.origin.url')
-    this.org = this.script.sh('''git config --get remote.origin.url | rev | awk -F'[./:]' '{print $2}' | rev''').trim()
-    this.repo = this.script.sh('''git config --get remote.origin.url | rev | awk -F'[./:]' '{print $1}' | rev''').trim()
+    this.origin = this.script.sh(script: 'git config --get remote.origin.url', returnStdout: true)
+    this.org = this.script.sh(script: '''git config --get remote.origin.url | rev | awk -F'[./:]' '{print $2}' | rev''', returnStdout: true).trim()
+    this.repo = this.script.sh(script: '''git config --get remote.origin.url | rev | awk -F'[./:]' '{print $1}' | rev''', returnStdout: true).trim()
     println("[origin:${origin}] [org:${org}] [repo:${repo}]")
     //
     // Get authors' emails
     printTopic('Author(s)')
-    this.lastCommitAuthorEmail = this.script.sh('''git log --format="%ae" HEAD^!''').trim()
+    this.lastCommitAuthorEmail = this.script.sh(script: '''git log --format="%ae" HEAD^!''', returnStdout: true).trim()
     if (!pullRequest){
-      lastCommitAuthorEmail = this.script.sh('''git log -2 --format="%ae" | paste -s -d ",\n"''').trim()
+      lastCommitAuthorEmail = this.script.sh(script: '''git log -2 --format="%ae" | paste -s -d ",\n"''', returnStdout: true).trim()
     }
     println("[lastCommitAuthorEmail:${lastCommitAuthorEmail}]")
     //
     //
     printTopic('Sonarqube properties')
-    this.script.sh('cat sonar-project.properties')
+    this.script.sh(script: 'cat sonar-project.properties', returnStdout: true)
 
     this.script.sh('echo Hi && pwd')
   }
