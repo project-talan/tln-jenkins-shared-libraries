@@ -4,7 +4,7 @@ class ScmHelper {
   def script
   def scmVars
   def params
-  def pullRequest
+  private pullRequest
   def commitSha
   def buildBranch
   def pullId
