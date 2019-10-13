@@ -32,11 +32,10 @@ class ScmHelper {
   }
   
   public void printTopic(topic, width = 80) {
-    println("[*] ${topic} ".padRight(width, '-'))
+    this.script.println("[*] ${topic} ".padRight(width, '-'))
   }
   
   public void runSonarQubeChecks(sonarScanner, sonarServer, applyQualitygates) {
-    dsxaxaazas
     printTopic('runSonarQubeChecks')
     println('1')
     if (sonarScanner && sonarServer) {
