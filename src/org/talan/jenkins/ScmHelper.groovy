@@ -111,7 +111,7 @@ class ScmHelper {
     printTopic('Build info')
     printVar("[PR:${this.pullRequest}] [BRANCH:${this.buildBranch}] [COMMIT: ${this.commitSha}] [PULL ID: ${this.pullId}]")
     printTopic('Environment variables')
-    this.script.sh(script:'env', returnStdout: true)
+    printVar(this.script.sh(script:'env', returnStdout: true))
     //
     // Extract organisation and repository names
     printTopic('Repo parameters')
@@ -130,7 +130,7 @@ class ScmHelper {
     //
     //
     printTopic('Sonarqube properties')
-    this.script.sh(script: 'cat sonar-project.properties', returnStdout: true)
+    printVar(this.script.sh(script: 'cat sonar-project.properties', returnStdout: true))
   }
 
   /*
