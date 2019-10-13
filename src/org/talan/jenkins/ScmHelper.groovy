@@ -4,7 +4,7 @@ class ScmHelper {
   def script
   def scmVars
   def params
-  def isPullRequest
+  def pullRequest
   def commitSha
   def buildBranch
   def pullId
@@ -19,7 +19,7 @@ class ScmHelper {
     this.script = script
     this.scmVars = [:]
     this.params = [:]
-    this.isPullRequest = false
+    this.pullRequest = false
     this.commitSha = ''
     this.buildBranch = ''
     this.pullId = ''
@@ -43,11 +43,11 @@ class ScmHelper {
     this.buildBranch = this.scmVars.GIT_BRANCH
     if (this.buildBranch.contains('PR-')) {
       // multibranch PR build
-      this.isPullRequest = true
+      this.pullRequest = true
       this.pullId = this.script.env.CHANGE_ID
     } else if (this.params.containsKey('sha1')){
       // standard PR build
-      this.isPullRequest = true
+      this.pullRequest = true
       this.pullId = this.params.ghprbPullId
       this.commitSha = this.params.ghprbActualCommit
     } else {
@@ -61,7 +61,7 @@ class ScmHelper {
     //
     // Be able to work with standard pipeline and multibranch pipeline identically
     printTopic('Build info')
-    println("[PR:${this.isPullRequest}] [BRANCH:${this.buildBranch}] [COMMIT: ${this.commitSha}] [PULL ID: ${this.pullId}]")
+    println("[PR:${this.pullRequest}] [BRANCH:${this.buildBranch}] [COMMIT: ${this.commitSha}] [PULL ID: ${this.pullId}]")
     printTopic('Environment variables')
     this.script.sh(script:'env', returnStdout: true)
     //
