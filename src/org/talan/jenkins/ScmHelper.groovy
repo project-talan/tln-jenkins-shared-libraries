@@ -36,6 +36,7 @@ class ScmHelper {
   }
   
   public void runSonarQubeChecks(sonarScanner, sonarServer, applyQualitygates) {
+    dsxaxaazas
     printTopic('runSonarQubeChecks')
     println('1')
     if (sonarScanner && sonarServer) {
