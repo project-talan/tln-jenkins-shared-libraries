@@ -35,16 +35,17 @@ class ScmHelper {
     this.script.println("[*] ${topic} ".padRight(width, '-'))
   }
   
+  public void printVar(variable) {
+    this.script.println(variable)
+  }
+  
   public void runSonarQubeChecks(sonarScanner, sonarServer, applyQualitygates) {
-    printTopic('runSonarQubeChecks')
-    println('1')
     if (sonarScanner && sonarServer) {
       def scannerHome = this.script.tool("${sonarScanner}")
       this.script.withSonarQubeEnv("${sonarServer}") {
-        println('2')
+        printVar('!!!!!!!!!!!!!!!!!!!!')
       }
     }
-    println('3')
   }
   
   public void collectBuildInfo(scmVars, params) {
@@ -67,13 +68,13 @@ class ScmHelper {
     }
     //
     printTopic('SCM variables')
-    println(this.scmVars)
+    printVar(this.scmVars)
     printTopic('Job input parameters');
-    println(this.params)
+    printVar(this.params)
     //
     // Be able to work with standard pipeline and multibranch pipeline identically
     printTopic('Build info')
-    println("[PR:${this.pullRequest}] [BRANCH:${this.buildBranch}] [COMMIT: ${this.commitSha}] [PULL ID: ${this.pullId}]")
+    printVar("[PR:${this.pullRequest}] [BRANCH:${this.buildBranch}] [COMMIT: ${this.commitSha}] [PULL ID: ${this.pullId}]")
     printTopic('Environment variables')
     this.script.sh(script:'env', returnStdout: true)
     //
@@ -82,7 +83,7 @@ class ScmHelper {
     this.origin = this.script.sh(script: 'git config --get remote.origin.url', returnStdout: true)
     this.org = this.script.sh(script: '''git config --get remote.origin.url | rev | awk -F'[./:]' '{print $2}' | rev''', returnStdout: true).trim()
     this.repo = this.script.sh(script: '''git config --get remote.origin.url | rev | awk -F'[./:]' '{print $1}' | rev''', returnStdout: true).trim()
-    println("[origin:${this.origin}] [org:${this.org}] [repo:${this.repo}]")
+    printVar("[origin:${this.origin}] [org:${this.org}] [repo:${this.repo}]")
     //
     // Get authors' emails
     printTopic('Author(s)')
@@ -90,13 +91,11 @@ class ScmHelper {
     if (!this.pullRequest){
       this.lastCommitAuthorEmail = this.script.sh(script: '''git log -2 --format="%ae" | paste -s -d ",\n"''', returnStdout: true).trim()
     }
-    println("[lastCommitAuthorEmail:${this.lastCommitAuthorEmail}]")
+    printVar("[lastCommitAuthorEmail:${this.lastCommitAuthorEmail}]")
     //
     //
     printTopic('Sonarqube properties')
     this.script.sh(script: 'cat sonar-project.properties', returnStdout: true)
-
-    this.script.sh('echo Hi && pwd')
   }
 
   /*
