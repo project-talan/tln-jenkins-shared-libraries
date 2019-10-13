@@ -75,7 +75,7 @@ class ScmHelper {
     // Get authors' emails
     printTopic('Author(s)')
     this.lastCommitAuthorEmail = this.script.sh(script: '''git log --format="%ae" HEAD^!''', returnStdout: true).trim()
-    if (!this.isPullRequest){
+    if (!this.pullRequest){
       this.lastCommitAuthorEmail = this.script.sh(script: '''git log -2 --format="%ae" | paste -s -d ",\n"''', returnStdout: true).trim()
     }
     println("[lastCommitAuthorEmail:${this.lastCommitAuthorEmail}]")
