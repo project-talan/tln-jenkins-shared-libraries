@@ -36,6 +36,7 @@ class ScmHelper {
   }
   
   public void runSonarQubeChecks(sonarScanner, sonarServer, applyQualitygates) {
+    printTopic('runSonarQubeChecks')
     println('1')
     if (sonarScanner && sonarServer) {
       def scannerHome = this.script.tool("${sonarScanner}")
@@ -45,6 +46,7 @@ class ScmHelper {
     }
     println('3')
   }
+  
   public void collectBuildInfo(scmVars, params) {
     this.scmVars = scmVars
     this.params = params
