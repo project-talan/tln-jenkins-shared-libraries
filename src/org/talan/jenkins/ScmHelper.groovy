@@ -45,7 +45,7 @@ class ScmHelper {
       def scannerHome = this.script.tool("${sonarScanner}")
       this.script.withSonarQubeEnv("${sonarServer}") {
         if (this.pullRequest){
-          sh "${scannerHome}/bin/sonar-scanner -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=${this.pullId} -Dsonar.github.repository=${this.org}/${this.repo} -Dsonar.github.oauth=${GITHUB_ACCESS_TOKEN} -Dsonar.login=${this.githubToken}"
+          sh "${scannerHome}/bin/sonar-scanner -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=${this.pullId} -Dsonar.github.repository=${this.org}/${this.repo} -Dsonar.github.oauth=${this.githubToken} -Dsonar.login=${this.sonarToken}"
         } else {
           sh "${scannerHome}/bin/sonar-scanner -Dsonar.login=${this.sonarToken}"
           // check SonarQube Quality Gates
