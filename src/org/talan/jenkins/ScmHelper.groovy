@@ -60,7 +60,7 @@ class ScmHelper {
             //// HTTP Request Plugin
             this.script.timeout(time: 1, unit: 'MINUTES') {
               this.script.waitUntil {
-                def response = httpRequest "${ceTaskUrl}"
+                def response = this.script.httpRequest("${ceTaskUrl}")
                 printVar('Status: ' + response.status)
                 printVar('Response: ' + response.content)
                 ceTask = this.script.readJSON(text: response.content)
