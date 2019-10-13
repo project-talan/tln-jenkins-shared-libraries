@@ -36,6 +36,7 @@ class ScmHelper {
   }
     
   public void collectBuildInfo(scmVars, params) {
+    dgfgfdfgdfg
     this.scmVars = scmVars
     this.params = params
     //
