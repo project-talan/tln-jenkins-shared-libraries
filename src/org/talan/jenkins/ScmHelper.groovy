@@ -70,7 +70,7 @@ class ScmHelper {
     this.origin = this.script.sh(script: 'git config --get remote.origin.url', returnStdout: true)
     this.org = this.script.sh(script: '''git config --get remote.origin.url | rev | awk -F'[./:]' '{print $2}' | rev''', returnStdout: true).trim()
     this.repo = this.script.sh(script: '''git config --get remote.origin.url | rev | awk -F'[./:]' '{print $1}' | rev''', returnStdout: true).trim()
-    println("[origin:${origin}] [org:${org}] [repo:${repo}]")
+    println("[origin:${this.origin}] [org:${this.org}] [repo:${this.repo}]")
     //
     // Get authors' emails
     printTopic('Author(s)')
