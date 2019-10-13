@@ -43,7 +43,47 @@ class ScmHelper {
     if (sonarScanner && sonarServer) {
       def scannerHome = this.script.tool("${sonarScanner}")
       this.script.withSonarQubeEnv("${sonarServer}") {
-        printVar('!!!!!!!!!!!!!!!!!!!!')
+        setGithubBuildStatus('quality_gates', '', this.script.env.BUILD_URL, 'pending');
+        if (SONARQUBE_SERVER && SONARQUBE_SCANNER) {
+          def scannerHome = tool "${SONARQUBE_SCANNER}"
+          withSonarQubeEnv("${SONARQUBE_SERVER}") {
+            if (this.pullRequest){
+              sh "${scannerHome}/bin/sonar-scanner -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=${this.pullId} -Dsonar.github.repository=${this.org}/${this.repo} -Dsonar.github.oauth=${GITHUB_ACCESS_TOKEN} -Dsonar.login=${this.githubToken}"
+            } else {
+              sh "${scannerHome}/bin/sonar-scanner -Dsonar.login=${this.sonarToken}"
+              // check SonarQube Quality Gates
+              if (applyQualitygates) {
+                //// Pipeline Utility Steps
+                def props = this.script.readProperties(file: '.scannerwork/report-task.txt')
+                printTopic('Properties')
+                printVar(props)
+                def sonarServerUrl=props['serverUrl']
+                def ceTaskUrl= props['ceTaskUrl']
+                def ceTask
+                //// HTTP Request Plugin
+                this.script.timeout(time: 1, unit: 'MINUTES') {
+                  this.script.waitUntil {
+                    def response = httpRequest "${ceTaskUrl}"
+                    printVar('Status: ' + response.status)
+                    printVar('Response: ' + response.content)
+                    ceTask = this.script.readJSON(text: response.content)
+                    return (response.status == 200) && ("SUCCESS".equals(ceTask['task']['status']))
+                  }
+                }
+                //
+                def qgResponse = this.script.httpRequest(sonarServerUrl + "/api/qualitygates/project_status?analysisId=" + ceTask['task']['analysisId'])
+                def qualitygate = this.script.readJSON(text: qgResponse.content)
+                printVar(qualitygate.toString())
+                if ("ERROR".equals(qualitygate["projectStatus"]["status"])) {
+                  setGithubBuildStatus('quality_gates', '', this.script.env.BUILD_URL, 'failure');
+                  this.script.currentBuild.description = "Quality Gate failure"
+                  this.script.error(currentBuild.description)
+                }
+              }
+            }
+          }
+        }
+        setGithubBuildStatus('quality_gates', '', this.script.env.BUILD_URL, 'success');
       }
     }
   }
