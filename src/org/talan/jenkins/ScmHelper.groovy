@@ -4,7 +4,7 @@ class ScmHelper {
   def script
   def scmVars
   def params
-  private boolean pullRequest
+  boolean pullRequest
   def commitSha
   def buildBranch
   def pullId
@@ -36,7 +36,6 @@ class ScmHelper {
   }
     
   public void collectBuildInfo(scmVars, params) {
-    dgfgfdfgdfg
     this.scmVars = scmVars
     this.params = params
     //
