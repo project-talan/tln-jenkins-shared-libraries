@@ -34,7 +34,15 @@ class ScmHelper {
   public void printTopic(topic, width = 80) {
     println("[*] ${topic} ".padRight(width, '-'))
   }
-    
+  
+  public void runSonarQubeChecks(sonarScanner, sonarServer, applyQualitygates) {
+    if (sonarScanner && sonarServer) {
+        def scannerHome = this.script.tool("${sonarScanner}")
+        this.script.withSonarQubeEnv("${sonarServer}") {
+          println('!!!!!!!!!!!!!!!!!!!!!!!!!!!')
+        }
+    }
+  }
   public void collectBuildInfo(scmVars, params) {
     this.scmVars = scmVars
     this.params = params
