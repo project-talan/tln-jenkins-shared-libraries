@@ -36,12 +36,14 @@ class ScmHelper {
   }
   
   public void runSonarQubeChecks(sonarScanner, sonarServer, applyQualitygates) {
+    println('1')
     if (sonarScanner && sonarServer) {
-        def scannerHome = this.script.tool("${sonarScanner}")
-        this.script.withSonarQubeEnv("${sonarServer}") {
-          println('!!!!!!!!!!!!!!!!!!!!!!!!!!!')
-        }
+      def scannerHome = this.script.tool("${sonarScanner}")
+      this.script.withSonarQubeEnv("${sonarServer}") {
+        println('2')
+      }
     }
+    println('3')
   }
   public void collectBuildInfo(scmVars, params) {
     this.scmVars = scmVars
