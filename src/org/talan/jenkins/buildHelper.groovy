@@ -1,6 +1,6 @@
 package org.talan.jenkins
 
-class myHelper {
+class buildHelper {
   def script
   def scmVars
   def params
@@ -15,7 +15,7 @@ class myHelper {
   def sonarToken
   def githubToken
 
-  myHelper(script, sonarToken, githubToken) {
+  buildHelper(script, sonarToken, githubToken) {
     this.script = script
     this.scmVars = [:]
     this.params = [:]
