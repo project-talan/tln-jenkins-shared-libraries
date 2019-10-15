@@ -1,9 +1,9 @@
 package org.talan.jenkins
 
-class scmHelper {
+class myHelper {
   def script
 
-  scmHelper(script) {
+  myHelper(script) {
     this.script = script
   }
   
