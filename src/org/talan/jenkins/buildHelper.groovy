@@ -133,6 +133,13 @@ class buildHelper {
     printVar("[lastCommitAuthorEmail:${this.lastCommitAuthorEmail}]")
   }
 
+  getInfoFromPackageJson(fileName = 'package.json') {
+    def packageJson = this.script.readJSON(file: fileName)
+    def ids = packageJson.name.split('[.]') as List
+    return [ids.join('.'), ids.removeAt(ids.size()-1), packageJson.name, packageJson.version]
+  }
+
+  
   /*
    * params:
 
