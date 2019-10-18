@@ -136,7 +136,8 @@ class buildHelper {
   public getInfoFromPackageJson(fileName = 'package.json') {
     def packageJson = this.script.readJSON(file: fileName)
     def ids = packageJson.name.split('[.]') as List
-    return [ids.join('.'), ids.removeAt(ids.size()-1), packageJson.name, packageJson.version]
+    def artifact = ids.removeAt(ids.size()-1)
+    return [ids.join('.'), artifact, packageJson.name, packageJson.version]
   }
 
   
