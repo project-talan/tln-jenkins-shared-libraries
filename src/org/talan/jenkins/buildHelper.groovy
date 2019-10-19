@@ -40,6 +40,10 @@ class buildHelper {
   }
   
   public void runSonarQubeChecks(sonarScanner, sonarServer, applyQualitygates) {
+    //
+    printTopic('Sonarqube properties')
+    printVar(this.script.sh(script: 'cat sonar-project.properties', returnStdout: true))
+    //
     setGithubBuildStatus('quality_gates', '', this.script.env.BUILD_URL, 'pending');
     if (sonarScanner && sonarServer) {
       def scannerHome = this.script.tool("${sonarScanner}")
@@ -127,12 +131,16 @@ class buildHelper {
       this.lastCommitAuthorEmail = this.script.sh(script: '''git log -2 --format="%ae" | paste -s -d ",\n"''', returnStdout: true).trim()
     }
     printVar("[lastCommitAuthorEmail:${this.lastCommitAuthorEmail}]")
-    //
-    //
-    printTopic('Sonarqube properties')
-    printVar(this.script.sh(script: 'cat sonar-project.properties', returnStdout: true))
   }
 
+  public getInfoFromPackageJson(fileName = 'package.json') {
+    def packageJson = this.script.readJSON(file: fileName)
+    def ids = packageJson.name.split('[.]') as List
+    def artifact = ids.removeAt(ids.size()-1)
+    return [ids.join('.'), artifact, packageJson.name, packageJson.version]
+  }
+
+  
   /*
    * params:
 
