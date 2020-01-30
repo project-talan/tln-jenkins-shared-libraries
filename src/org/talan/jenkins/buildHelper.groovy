@@ -39,7 +39,7 @@ class buildHelper {
     this.script.println(variable)
   }
   
-  public void runSonarQubeChecks(sonarScanner, sonarServer, applyQualitygates) {
+  public void runSonarQubeChecks(sonarScanner, sonarServer, applyQualitygates, debugSonarOutput) {
     //
     printTopic('Sonarqube properties')
     printVar(this.script.sh(script: 'cat sonar-project.properties', returnStdout: true))
@@ -47,11 +47,12 @@ class buildHelper {
     setGithubBuildStatus('quality_gates', '', this.script.env.BUILD_URL, 'pending');
     if (sonarScanner && sonarServer) {
       def scannerHome = this.script.tool("${sonarScanner}")
+      def debugSonarOutputSwitch = debugSonarOutput?'-X':''
       this.script.withSonarQubeEnv("${sonarServer}") {
         if (this.pullRequest){
-          this.script.sh("${scannerHome}/bin/sonar-scanner -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=${this.pullId} -Dsonar.github.repository=${this.org}/${this.repo} -Dsonar.github.oauth=${this.githubToken} -Dsonar.login=${this.sonarToken}")
+          this.script.sh("${scannerHome}/bin/sonar-scanner -Dsonar.analysis.mode=preview -Dsonar.github.pullRequest=${this.pullId} -Dsonar.github.repository=${this.org}/${this.repo} -Dsonar.github.oauth=${this.githubToken} -Dsonar.login=${this.sonarToken} ${debugSonarOutputSwitch}")
         } else {
-          this.script.sh("${scannerHome}/bin/sonar-scanner -Dsonar.login=${this.sonarToken}")
+          this.script.sh("${scannerHome}/bin/sonar-scanner -Dsonar.login=${this.sonarToken} ${debugSonarOutputSwitch}")
           // check SonarQube Quality Gates
           if (applyQualitygates) {
             //// Pipeline Utility Steps
