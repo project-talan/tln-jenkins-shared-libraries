@@ -17,14 +17,14 @@ def getCommonParameters(mask, defaults = null) {
   params.each {
     if ((mask & it.flag) == it.flag) {
       if (it.type == 'string') {
-        result += [string(name: it.name, defaultValue: (defaults && defaults[it.name])?defaults[it.name]:it.default)]
+        result += [string(name: it.name, defaultValue: (defaults && defaults[it.name])?defaults[it.name]:it.default)];
       } else if (it.type == 'text') {
-        result += [text(name: it.name, defaultValue: (defaults && defaults[it.name])?defaults[it.name].join('\n'):it.default)]
+        result += [text(name: it.name, defaultValue: (defaults && defaults[it.name])?defaults[it.name].join('\n'):it.default)];
       } else if (it.type == 'boolean') {
-        result += [booleanParam(name: it.name, defaultValue: (defaults && defaults[it.name])?defaults[it.name]:it.default)]
+        result += [booleanParam(name: it.name, defaultValue: (defaults && defaults[it.name])?defaults[it.name]:it.default)];
       }
     }
   }
-  return result
+  return result;
 }
 
