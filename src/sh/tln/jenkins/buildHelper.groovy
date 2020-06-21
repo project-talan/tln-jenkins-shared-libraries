@@ -1,4 +1,4 @@
-package org.talan.jenkins
+package sh.tln.jenkins
 
 class buildHelper {
   def script
