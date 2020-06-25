@@ -15,7 +15,7 @@ class buildHelper {
   def sonarToken
   def githubToken
 
-  buildHelper(script, sonarToken, githubToken) {
+  buildHelper(script, githubToken, sonarToken) {
     this.script = script
     this.scmVars = [:]
     this.params = [:]
@@ -27,8 +27,8 @@ class buildHelper {
     this.origin = ''
     this.repo = ''
     this.org = ''
-    this.sonarToken = sonarToken
     this.githubToken = githubToken
+    this.sonarToken = sonarToken
   }
   
   public void printTopic(topic, width = 80) {
@@ -39,7 +39,7 @@ class buildHelper {
     this.script.println(variable)
   }
   
-  public void runSonarQubeChecks(sonarScanner, sonarServer, applyQualitygates, debugSonarOutput) {
+  public void runSonarQubeChecks(sonarServer, sonarScanner, applyQualitygates, debugSonarOutput) {
     //
     printTopic('Sonarqube properties')
     printVar(this.script.sh(script: 'cat sonar-project.properties', returnStdout: true))
